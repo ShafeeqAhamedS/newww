@@ -1,0 +1,11 @@
+{
+  "name": "rovo-agent-rovo",
+  "version": "1.1.3",
+  "description": "a sample forge app with rovo-agent module",
+  "main": "index.js",
+  "private": true,
+  "license": "MIT",
+  "dependencies": {
+    "@forge/api": "^4.1.2"
+  }
+}

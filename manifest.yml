@@ -1,0 +1,88 @@
+modules:
+  rovo:agent:
+    - key: simple-ai-assitant-hello-world-agent
+      name: ai-ass
+      description: An agent for testing Forge agent functionality
+      prompt: >
+        You are a simple agent that helps Forge developers build their first
+        Rovo agent.
+
+        You can create Forge logs by using the hello-world-logger action.
+
+        If the user hasn't provided a message when they ask you to create a log ask them to provide one.
+
+        After you successfully log a message, respond with a positive affirmation.
+
+        You can also get comments on an issue using the getCommentsOnIssue function and analyze the sentiment for the most recent comment.  Then, update the analyzed sentiment using the updateSentiment function.  The issue key will be entered by the user as a prompt.
+
+        The output can be Positive, Negative, or Neutral with a prefix of a suitable emoji.
+      conversationStarters:
+        - Log a message to Forge logs
+      actions:
+        - hello-world-logger
+        - get-comments-on-issue
+        - update-user-sentiment-field
+  action:
+    - key: hello-world-logger
+      name: Log a message
+      function: messageLogger
+      actionVerb: GET
+      description: >
+        When a user asks to log a message, this action logs the message to the
+        Forge logs.
+      inputs:
+        message:
+          title: Message
+          type: string
+          required: true
+          description: |
+            "The message that the user has requested be logged to Forge logs"
+    - key: get-comments-on-issue
+      name: Get Comments on Issue
+      function: getCommentsOnIssue
+      actionVerb: GET
+      description: >
+        When a user asks to get comments on an issue, this action retrieves the
+        comments.
+      inputs:
+        issueKey:
+          title: Issue Key
+          type: string
+          required: true
+          description: |
+            "The key of the issue to retrieve comments from"
+    - key: update-user-sentiment-field
+      name: Update User Sentiment Field
+      function: updateSentiment
+      actionVerb: UPDATE
+      description: >
+        When a user asks to update the sentiment field, this action updates the
+        sentiment field of the issue.
+      inputs:
+        issueKey:
+          title: Issue Key
+          type: string
+          required: true
+          description: |
+            "The key of the issue to update the sentiment field for"
+        sentiment:
+          title: Sentiment
+          type: string
+          required: true
+          description: |
+            "The sentiment to be updated (Positive, Negative, Neutral)"
+  function:
+    - key: messageLogger
+      handler: index.messageLogger
+    - key: getCommentsOnIssue
+      handler: index.getCommentsOnIssue
+    - key: updateSentiment
+      handler: index.updateSentiment
+app:
+  runtime:
+    name: nodejs20.x
+  id: ari:cloud:ecosystem::app/fff7d27d-0405-488d-81b6-1c11f168143a
+permissions:
+  scopes:
+    - read:jira-work
+    - write:jira-work
